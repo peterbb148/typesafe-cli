@@ -19,8 +19,8 @@ Server 2022. Do not cross-label an artifact from another host. PyInstaller is pi
 UV lockfile. Complete build and smoke checks use fake keys and temporary home directories.
 
 The package separates command definitions (`cli.py`), credential storage (`auth.py`), input/output
-(`io.py`), and SDK calls/error handling (`adapter.py`). Gitomics stays in `examples/` and never
-enters core dependencies. Tests use real SDK parsing with mock transport or a local mock server.
+(`io.py`), and SDK calls/error handling (`adapter.py`). Examples demonstrate generic TypeSafe
+inputs and JSON pipelines. Tests use real SDK parsing with mock transport or a local mock server.
 
 `src/typesafe_cli/__init__.py` is the single package/binary version source. Change its version,
 update docs/skill/changelog, regenerate `uv.lock`, run checks, and tag `vVERSION`. The tag workflow

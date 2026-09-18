@@ -51,12 +51,6 @@ Retries belong to the SDK, with a 60-second retry budget; do not stack unbounded
 For authentication failures check environment precedence before replacing a stored key.
 Do not diagnose failures by printing credentials or private state.
 
-For Gitomics dataset selection, read the
-[versioned optional example](https://github.com/peterbb148/typesafe-cli/blob/v0.1.0/examples/gitomics/README.md).
-Gitomics is optional. Answer JSON requires an adapter: validate exact candidate IDs and route
-uncertainty before constructing the fixed read-only `datasets show` argument array. Never execute
-model-generated command strings. The illustrative threshold is not a calibrated guarantee.
-
 Examples of requests this skill supports: “Save my TypeSafe key”, “List available models”,
 “Classify these records and score urgency in one call”, and “Pipe this JSON into TypeSafe”.
 Offline tests use mocks; do not describe them as live provider validation.

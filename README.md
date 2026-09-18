@@ -162,10 +162,7 @@ credentials, replace them with `auth login`. Provider failures return sanitized 
 network, model access, account limits, or service status as indicated. No automatic credential
 refresh or persistent request logging is performed.
 
-## Gitomics and Codex skill
-
-The [optional Gitomics example](examples/gitomics/README.md) adapts discovery JSON into questions,
-validates exact dataset IDs, and only performs a read when requested. Gitomics is not a dependency.
+## Codex skill
 
 Download `typesafe-cli-0.1.0-skill.zip` from the same release and extract its `typesafe-cli` folder
 into `~/.codex/skills/` (or your configured `$CODEX_HOME/skills`). The result should contain

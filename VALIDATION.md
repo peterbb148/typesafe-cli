@@ -20,7 +20,7 @@ No credentials are included in the repository or this record.
 - The response reported model `jev-1.13.0`, all three named typed answers, probabilities and
   confidence where applicable, and usage of 383 input tokens / 67 output tokens.
 - This was a real provider call, separate from mock tests. It does not establish correctness
-  or confidence calibration for other inputs. Gitomics integration remains offline-tested.
+  or confidence calibration for other inputs.
 
 ## Cross-platform release validation
 
