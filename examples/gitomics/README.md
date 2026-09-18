@@ -8,6 +8,7 @@ are sent as state. Real state/questions are sent to TypeSafe; choose appropriate
 Prepare inspectable state/questions using a scientist's explicit question:
 
 ```bash
+set -euo pipefail
 python examples/gitomics/adapter.py prepare --discovery examples/gitomics/discovery.json --question 'Which dataset can support a barley genotype comparison?' --output /tmp/typesafe-example
 cat /tmp/typesafe-example/state.json
 cat /tmp/typesafe-example/questions.json
