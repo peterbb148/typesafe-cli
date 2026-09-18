@@ -1,0 +1,23 @@
+{
+  "count": 2,
+  "records": [
+    {
+      "name": "Public-style barley panel",
+      "genome": "barley",
+      "tags": [
+        "synthetic"
+      ],
+      "id": "synthetic-barley-001",
+      "created_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "name": "Yeast panel",
+      "genome": "yeast",
+      "tags": [
+        "synthetic"
+      ],
+      "id": "synthetic-yeast-001",
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  ]
+}

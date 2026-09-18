@@ -1,0 +1,27 @@
+{
+  "billing": {
+    "type": "noul",
+    "instructions": "Is this about billing?"
+  },
+  "tone": {
+    "type": "choice",
+    "instructions": {
+      "question": "What is the tone?"
+    },
+    "criteria": {
+      "calm": null,
+      "frustrated": {
+        "description": "Expresses frustration"
+      }
+    }
+  },
+  "urgency": {
+    "type": "score",
+    "instructions": "How urgent is this?",
+    "criteria": [
+      "can wait",
+      "this week",
+      "today"
+    ]
+  }
+}

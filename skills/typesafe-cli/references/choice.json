@@ -1,0 +1,14 @@
+{
+  "tone": {
+    "type": "choice",
+    "instructions": {
+      "question": "What is the tone?"
+    },
+    "criteria": {
+      "calm": null,
+      "frustrated": {
+        "description": "Expresses frustration"
+      }
+    }
+  }
+}
