@@ -24,6 +24,20 @@ No credentials are included in the repository or this record.
 
 ## Cross-platform release validation
 
-The committed CI matrix builds and smoke-tests macOS ARM64, Ubuntu ARM64/x86-64, and Windows
-x86-64 artifacts on matching native runners. At the time of this record, remote CI/publication
-is pending GitHub workflow-scope authorization; no macOS, ARM64, or Windows success is claimed.
+[CI run 35349424847](https://github.com/peterbb148/typesafe-cli/actions/runs/35349424847)
+passed on commit `039ebd7`:
+
+- Ubuntu 24.04 x86-64 and ARM64: native binary builds and extracted-archive smoke tests passed.
+- macOS 14 Apple Silicon ARM64: native binary build and extracted-archive smoke test passed.
+- Windows Server 2022 x86-64: native binary build and extracted-archive smoke test passed,
+  including verification that stored credential ACL entries grant access only to the current user.
+- Python 3.12, 3.13, and 3.14 checks passed. Each platform ran 51 tests with one platform-specific
+  permission test skipped (POSIX mode checks on Windows; Windows ACL checks on Unix).
+- Each wheel was installed outside the checkout and exercised against a mock provider.
+
+The first Windows run exposed default-encoding assumptions in test fixtures; these were fixed
+with explicit UTF-8. The installed-wheel check also assumed a single ACL entry; it now verifies
+all entries belong to the current user and that inheritance is protected.
+
+The tag-triggered release workflow repeats the full matrix before publishing all seven artifacts
+plus SHA256SUMS. Consult the release workflow run for validation of the exact tagged source.
