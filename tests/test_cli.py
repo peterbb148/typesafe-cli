@@ -329,3 +329,28 @@ def test_corrupt_file_ignored_by_environment(monkeypatch):
     auth.credential_path().write_text("broken")
     monkeypatch.setenv("TYPESAFE_API_KEY", "new-key")
     assert auth.resolve() == ("new-key", "environment")
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows ACLs")
+def test_windows_credentials_grant_only_current_user():
+    import win32api
+    import win32con
+    import win32security
+
+    auth.save("fake-key")
+    token = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_QUERY)
+    try:
+        user = win32security.GetTokenInformation(token, win32security.TokenUser)[0]
+    finally:
+        token.Close()
+    for path in (auth.credential_path(), auth.credential_path().parent):
+        descriptor = win32security.GetNamedSecurityInfo(
+            str(path), win32security.SE_FILE_OBJECT, win32security.DACL_SECURITY_INFORMATION
+        )
+        acl = descriptor.GetSecurityDescriptorDacl()
+        assert acl is not None and acl.GetAceCount() > 0
+        for index in range(acl.GetAceCount()):
+            ace = acl.GetAce(index)
+            assert ace[0][0] == win32security.ACCESS_ALLOWED_ACE_TYPE, ace
+            assert ace[2] == user, ace
+        assert descriptor.GetSecurityDescriptorControl()[0] & win32security.SE_DACL_PROTECTED

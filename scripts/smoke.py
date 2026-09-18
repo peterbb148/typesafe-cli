@@ -133,15 +133,30 @@ def run_smoke(executable, binary=False):
                 assert path.stat().st_mode & 0o777 == 0o600
                 assert path.parent.stat().st_mode & 0o777 == 0o700
             else:
+                import win32api
+                import win32con
                 import win32security
 
+                token = win32security.OpenProcessToken(
+                    win32api.GetCurrentProcess(), win32con.TOKEN_QUERY
+                )
+                try:
+                    user = win32security.GetTokenInformation(token, win32security.TokenUser)[0]
+                finally:
+                    token.Close()
                 for item in (path, path.parent):
                     descriptor = win32security.GetNamedSecurityInfo(
                         str(item),
                         win32security.SE_FILE_OBJECT,
                         win32security.DACL_SECURITY_INFORMATION,
                     )
-                    assert descriptor.GetSecurityDescriptorDacl().GetAceCount() == 1
+                    acl = descriptor.GetSecurityDescriptorDacl()
+                    assert acl is not None and acl.GetAceCount() > 0
+                    for index in range(acl.GetAceCount()):
+                        ace = acl.GetAce(index)
+                        assert ace[0][0] == win32security.ACCESS_ALLOWED_ACE_TYPE, ace
+                        assert ace[2] == user, ace
+
                     assert (
                         descriptor.GetSecurityDescriptorControl()[0]
                         & win32security.SE_DACL_PROTECTED
