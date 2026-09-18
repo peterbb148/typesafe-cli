@@ -18,11 +18,11 @@ def test_portable_skill_examples(tmp_path, monkeypatch):
 
     folder = tmp_path / "typesafe-cli"
     shutil.copytree(ROOT / "skills/typesafe-cli", folder)
-    text = (folder / "SKILL.md").read_text()
+    text = (folder / "SKILL.md").read_text(encoding="utf-8")
     metadata = yaml.safe_load(text.split("---", 2)[1])
     assert metadata["name"] == "typesafe-cli" and metadata["description"]
     for document in folder.rglob("*.md"):
-        for link in re.findall(r"\]\(([^)]+)\)", document.read_text()):
+        for link in re.findall(r"\]\(([^)]+)\)", document.read_text(encoding="utf-8")):
             if not link.startswith("https://"):
                 assert (document.parent / link).exists()
     monkeypatch.chdir(tmp_path)

@@ -268,7 +268,7 @@ def test_invalid_questions(tmp_path, questions):
 
 def test_text_files_and_unreadable(monkeypatch, tmp_path):
     path = tmp_path / "state.txt"
-    path.write_text("raw α text")
+    path.write_text("raw α text", encoding="utf-8")
     seen = []
 
     def call(op, **kwargs):
