@@ -29,6 +29,27 @@ and SHA256SUMS. Binary builds are repeatable from pinned inputs but OS runner im
 timestamps mean byte-identical native artifacts are not promised. Hatchling produces reproducible
 Python distributions from the same source and build inputs.
 
+Actions artifact retention keeps the two newest successful builds with unexpired artifacts,
+across CI (including pull requests) and Release combined, ordered by run creation time. Each
+build's four native bundles and Python distributions are retained together. These are build
+runs, not distinct package versions; several builds can share a version. After either workflow
+succeeds, the separate Artifact retention workflow deletes matching artifacts from other
+completed CI/Release runs, including failed or cancelled builds. Queued/running builds are
+protected, so storage can temporarily exceed two sets. Release validation artifacts remain
+protected until the entire Release run, including publication, finishes. GitHub's configured
+artifact expiration still applies to retained builds. Published GitHub Release assets are
+unaffected.
+
+The cleanup uses trusted default-branch code and only its job receives `actions: write`.
+It becomes active after the workflow is merged to the default branch and a CI or Release run
+succeeds. Preview the same policy without deleting anything using authenticated `gh`:
+
+```bash
+uv run --no-project python scripts/prune_artifacts.py --repo peterbb148/typesafe-cli
+```
+
+Add `--apply` to delete the selected artifacts. API failures stop cleanup and fail the job.
+
 Never add credentials or private evaluation inputs to fixtures. Live validation is opt-in:
 explicitly supply `TYPESAFE_API_KEY` and run `uv run python scripts/live_smoke.py`. Record live and
 mock evidence separately.
