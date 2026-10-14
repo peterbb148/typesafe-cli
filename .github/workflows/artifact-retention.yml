@@ -1,0 +1,30 @@
+name: Artifact retention
+on:
+  workflow_run:
+    workflows: [CI, Release]
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: artifact-retention
+  cancel-in-progress: false
+jobs:
+  prune:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      # Use trusted default-branch code, never the triggering PR's checkout or artifacts.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.9.22'
+          python-version: '3.12'
+      - name: Keep the current and previous successful build artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --no-project python scripts/prune_artifacts.py --repo "$GITHUB_REPOSITORY" --apply
